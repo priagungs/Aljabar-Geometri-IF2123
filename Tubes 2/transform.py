@@ -1,40 +1,31 @@
-import matrixOp
+# import matrixOp
 
 centerPointX, centerPointY = 250, 250
 vertices = []
 
 def inputVertices():
-    N = input("Input number of vertex : ")
+    N = input("Enter number of polygon : ")
     for i in range(N):
-        vertices.append([])
-        x,y = raw_input("Insert X,Y : ").split()
-        vertices[i].append(int(x)+centerPointX)
-        vertices[i].append(int(y)+centerPointY)
+        print "vertex ke-", i+1
+        x = input("x : ")
+        y = input("y : ")
+        x += centerPointX
+        y += centerPointY
+        vertices.append([x,y])
 
-def MTranslate(dx,dy): # return matrix translation
-    return [dx,dy]
-
-def translate(dx, dy):
-    MT = MTranslate(dx,dy)
-    for i in range(len(vertices)): #looping as much as number of vertex
-        vertices[i] = matrixOp.addition(vertices[i], MT)
-
-def MDilate(k):
-    return [[k,0],[0,k]]
+def translate(dx,dy):
+    for i in range(len(vertices)):
+        vertices[i][0] += dx
+        vertices[i][1] += dy
 
 def dilate(k):
-    M = MDilate(k)
     for i in range(len(vertices)):
-        #vertices in accordance to origin point
-        vertices[i][0] -= centerPointX
-        vertices[i][1] -= centerPointY
-
-        #dilation process
-        vertices[i] = matrixOp.multiply(M, vertices[i])
-
-        #vertices in accordance to center point
-        vertices[i][0] += centerPointX
-        vertices[i][1] += centerPointY
+        x = vertices[i][0] - centerPointX
+        x = k*x + centerPointX
+        y = vertices[i][1] - centerPointY
+        y = k*y + centerPointY
+        temp = [x,y]
+        vertices[i].append(temp)
 
 def stretch(var, k):
     if var == 'x':
