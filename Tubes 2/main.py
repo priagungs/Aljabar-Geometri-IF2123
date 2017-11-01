@@ -9,8 +9,6 @@ width, height = 500, 500                               # window size
 
 transform.inputVertices()
 
-default_vertices = copy.deepcopy(transform.vertices) #Save the default vertices
-
 def drawPolygon():
     glBegin(GL_POLYGON)
     for i in range(len(transform.vertices)):
@@ -19,7 +17,7 @@ def drawPolygon():
         glVertex2f(x,y)
     glEnd()
 
-
+default_vertices = list(transform.vertices) #Save the default vertices
 
 def drawCartesian():
     glBegin(GL_POLYGON)
@@ -68,7 +66,7 @@ def draw():                                            # ondraw is called all th
         transform.shear(inputCommand[1], float(inputCommand[2]))
 
     elif inputCommand[0] == 'reset':
-        transform.vertices = copy.deepcopy(default_vertices)
+        transform.vertices = list(default_vertices)
 
     elif inputCommand[0] == 'exit':
         sys.exit("Thanks for using our app :D")
