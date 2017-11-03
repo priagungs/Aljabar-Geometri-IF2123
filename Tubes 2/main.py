@@ -5,26 +5,26 @@ from thread import start_new_thread
 import transform
 import copy
 import os
+import time
 
 window = 0                                             # glut window number
 width, height = 500, 500                               # window size
 
 transform.inputVertices()
-
-default_vertices = copy.deepcopy(transform.vertices) #Save the default vertices
+default_vertices = copy.deepcopy(transform.vertices)
 
 def drawPolygon():
     glBegin(GL_POLYGON)
+    glColor3f(0,1,0)
     for i in range(len(transform.vertices)):
         x = transform.vertices[i][0]
         y = transform.vertices[i][1]
         glVertex2f(x,y)
     glEnd()
 
-
-
 def drawCartesian():
     glBegin(GL_POLYGON)
+    glColor3f(1,1,1)
     glVertex2f(249,0)
     glVertex2f(249,700)
     glVertex2f(251,0)
@@ -32,6 +32,7 @@ def drawCartesian():
     glEnd()
 
     glBegin(GL_POLYGON)
+    glColor3f(1,1,1)
     glVertex2f(0, 249)
     glVertex2f(700, 249)
     glVertex2f(0, 251)
@@ -46,13 +47,24 @@ def refresh2d(width, height):
     glMatrixMode (GL_MODELVIEW)
     glLoadIdentity()
 
+def reset():
+    temp = copy.deepcopy(default_vertices)
+    for i in range(len(temp)):
+        temp[i][0] = (temp[i][0] - transform.vertices[i][0])/float(transform.factor)
+        temp[i][1] = (temp[i][1] - transform.vertices[i][1])/float(transform.factor)
+
+    for j in range(transform.factor):
+        for i in range(len(temp)):
+            transform.vertices[i][0] += temp[i][0]
+            transform.vertices[i][1] += temp[i][1]
+        time.sleep(0.01)
+
 def drawThread():
     def draw():                                            # ondraw is called all the time
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) # clear the screen
         glLoadIdentity()                                    # reset position
         refresh2d(width, height)
 
-        glColor3f(0,0,0.3)
         drawCartesian()
         drawPolygon()
         glutSwapBuffers()
@@ -71,9 +83,9 @@ def drawThread():
 start_new_thread(drawThread, ())
 
 inputCommand = raw_input().split()
-while(inputCommand[0] != 'exit'):
+while(1):
     if inputCommand[0] == "translate":
-        transform.translate(int(inputCommand[1]), int(inputCommand[2]))
+        transform.translate(float(inputCommand[1]), float(inputCommand[2]))
 
     elif inputCommand[0] == "dilate":
         transform.dilate(float(inputCommand[1]))
@@ -82,13 +94,23 @@ while(inputCommand[0] != 'exit'):
         transform.stretch(inputCommand[1], float(inputCommand[2]))
 
     elif inputCommand[0] == 'rotate':
-        transform.rotate(float(inputCommand[1]), int(inputCommand[2]), int(inputCommand[3]))
+        transform.rotate(float(inputCommand[1]), float(inputCommand[2]), float(inputCommand[3]))
 
-    # elif inputCommand[0] == 'shear':
-    #     transform.shear(inputCommand[1], float(inputCommand[2]))
+    elif inputCommand[0] == 'reflect':
+        transform.reflect(inputCommand[1])
+
+    elif inputCommand[0] == 'shear':
+        transform.shear(inputCommand[1], float(inputCommand[2]))
+
+    elif inputCommand[0] == 'custom':
+        transform.custom(float(inputCommand[1]),float(inputCommand[2]),float(inputCommand[3]),float(inputCommand[4]))
+
+    elif inputCommand[0] == 'multiple':
+        transform.multiple(int(inputCommand[1]))
 
     elif inputCommand[0] == 'reset':
-        transform.vertices = copy.deepcopy(default_vertices)
+        reset()
+    elif inputCommand[0] == 'exit':
+        print "Thanks for using this app :D"
+        os._exit(1)
     inputCommand = raw_input().split()
-
-print "Thanks for using this app :D"
