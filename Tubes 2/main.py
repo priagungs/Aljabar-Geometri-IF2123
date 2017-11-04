@@ -1,3 +1,5 @@
+# - *- coding: utf- 8 - *-
+
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
@@ -9,6 +11,26 @@ import time
 
 window = 0                                             # glut window number
 width, height = 500, 500                               # window size
+
+print "  ==============================================================================="
+print "         _____                           ___                        ____         "
+print "        /__   \_   _  __ _  __ _ ___    / __\ ___  ___  __ _ _ __  |___ \        "
+print "          / /\/ | | |/ _` |/ _` / __|  /__\/// _ \/ __|/ _` | '__|   __) |       "
+print "         / /  | |_| | (_| | (_| \__ \ / \/  \  __/\__ \ (_| | |     / __/        "
+print "         \/    \__,_|\__, |\__,_|___/ \_____/\___||___/\__,_|_|    |_____|       "
+print "                     |___/                                                       "
+print "     _   _  _       _                    ___                          _        _ "
+print "    /_\ | |(_) __ _| |__   __ _ _ __    / _ \___  ___  _ __ ___   ___| |_ _ __(_)"
+print "    //_\\| || |/ _` | '_ \ / _` | '__|  / /_\/ _ \/ _ \| '_ ` _ \ / _ \ __| '__| |"
+print "  /  _  \ || | (_| | |_) | (_| | |    / /_\\  __/ (_) | | | | | |  __/ |_| |  | |"
+print "  \_/ \_/_|/ |\__,_|_.__/ \__,_|_|    \____/\___|\___/|_| |_| |_|\___|\__|_|  |_|"
+print "         |__/                                                                    "
+print "                                 by : 13516089"
+print "  "
+print "                                      13516054"
+print "  "
+print "  ==============================================================================="
+print "  "
 
 transform.inputVertices()
 default_vertices = copy.deepcopy(transform.vertices)
@@ -82,6 +104,7 @@ def drawThread():
 
 start_new_thread(drawThread, ())
 
+print "Command :",
 inputCommand = raw_input().split()
 while(1):
     if inputCommand[0] == "translate":
@@ -113,4 +136,5 @@ while(1):
     elif inputCommand[0] == 'exit':
         print "Thanks for using this app :D"
         os._exit(1)
+    print "Command :",
     inputCommand = raw_input().split()
